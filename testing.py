@@ -56,38 +56,29 @@ while True:
 
     # Check if any hand landmarks are detected
     if results.multi_hand_landmarks:
-        for hand_landmarks in results.multi_hand_landmarks:
-            # Draw the detected hand landmarks and connections on the zoomed frame
-            mp_drawing.draw_landmarks(
-                frame_zoomed,
-                hand_landmarks,
-                mp_hands.HAND_CONNECTIONS,
-                mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),  # Green landmarks
-                mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)  # Red connections
-            )
-
-            # Extract landmark coordinates for each detected landmark
-            for i in range(len(hand_landmarks.landmark)):
-                x = hand_landmarks.landmark[i].x  # x-coordinate of the landmark
-                y = hand_landmarks.landmark[i].y  # y-coordinate of the landmark
-                data_aux.append(x)  # Append x to data list
-                data_aux.append(y)  # Append y to data list
-
-            # Pad the data to ensure it matches the expected input size of the model
-            while len(data_aux) < 63:
-                data_aux.append(0)
-
-            # Make a prediction using the trained model based on the hand landmarks
+        # Use only the first detected hand
+        hand_landmarks = results.multi_hand_landmarks[0]
+        # Draw the detected hand landmarks and connections on the zoomed frame
+        mp_drawing.draw_landmarks(
+            frame_zoomed,
+            hand_landmarks,
+            mp_hands.HAND_CONNECTIONS,
+            mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),
+            mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2)
+        )
+        data_aux = []
+        for landmark in hand_landmarks.landmark:
+            data_aux.append(landmark.x)
+            data_aux.append(landmark.y)
+            data_aux.append(landmark.z)
+        # data_aux now has 63 values (21 landmarks × 3 coordinates)
+        if len(data_aux) == 63:
             prediction = model.predict([np.asarray(data_aux)])
-            predicted_character = labels_dict[int(prediction[0])]  # Get the corresponding label from the prediction
-
-            # Display the predicted character on the zoomed frame
-            cv2.putText(frame_zoomed, predicted_character, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3,
-                        cv2.LINE_AA)
+            predicted_character = labels_dict[int(prediction[0])]
+            cv2.putText(frame_zoomed, predicted_character, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3, cv2.LINE_AA)
     else:
         # If no hands are detected, display a message on the screen
-        cv2.putText(frame_zoomed, 'No hands detected', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 255), 3,
-                    cv2.LINE_AA)
+        cv2.putText(frame_zoomed, 'No hands detected', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 255), 3, cv2.LINE_AA)
 
     # Show the zoomed frame with landmarks and predictions in a window
     cv2.imshow('Video Capture', frame_zoomed)

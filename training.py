@@ -7,8 +7,10 @@ from sklearn.metrics import accuracy_score  # Metric to evaluate model performan
 # Load the dataset from a pickle file ('rb' means reading the file in binary mode)
 data_dict = pickle.load(open('./data.pickle', 'rb'))
 
+print(len(data_dict['data']))
 # Convert the data and labels into NumPy arrays for easier manipulation in machine learning
 data = np.asarray(data_dict['data'])  # Feature data (e.g., hand landmarks)
+print(data.shape)
 labels = np.asarray(data_dict['labels'])  # Labels (class indices for each sample)
 
 # Split the dataset into training and testing sets

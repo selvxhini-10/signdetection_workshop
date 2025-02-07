@@ -34,25 +34,14 @@ for dir_ in os.listdir(DATA_DIR):
 
         # Check if hand landmarks are detected in the image
         if results.multi_hand_landmarks:
-            # Create a temporary list to store x and y coordinates of the hand landmarks
             data_aux = []
-            # For each detected hand (there could be multiple hands in an image)
-            for hand_landmarks in results.multi_hand_landmarks:
-                # For each of the 21 landmarks (key points) on the hand
-                for landmark in hand_landmarks.landmark:
-                    # Append the x and y coordinates of each landmark to the list
-                    data_aux.append(landmark.x)
-                    data_aux.append(landmark.y)
-
-            # Ensure the length of the data (landmark coordinates) is consistent (padded to 63 elements)
-            # Each hand should have 21 landmarks, each with an x and y coordinate (21 * 2 = 42 values)
-            # If fewer values are detected, pad the remaining values with 0 to make it a consistent size
-            while len(data_aux) < 63:
-                data_aux.append(0)
-
-            # Append the extracted hand landmark data (data_aux) to the main 'data' list
+            hand_landmarks = results.multi_hand_landmarks[0]  # Use only the first detected hand
+            for landmark in hand_landmarks.landmark:
+                data_aux.append(landmark.x)
+                data_aux.append(landmark.y)
+                data_aux.append(landmark.z)
+            # No need for padding as we now always get 63 values (21*3)
             data.append(data_aux)
-            # Append the corresponding label index (gesture class) to the 'labels' list
             labels.append(label_index)
 
 # After processing all images, save the extracted data and labels into a pickle file
