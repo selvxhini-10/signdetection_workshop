@@ -38,7 +38,7 @@ for j in range(number_of_classes):
 
         # Get the dimensions of the captured frame
         height, width, _ = frame.shape
-        zoom_factor = 2  # Set the zoom level for cropping the image (increase to zoom in more)
+        zoom_factor = 1  # Set the zoom level for cropping the image (increase to zoom in more)
         center_x, center_y = width // 2, height // 2  # Calculate the center of the frame
 
         # Calculate the coordinates to crop the frame based on the zoom factor

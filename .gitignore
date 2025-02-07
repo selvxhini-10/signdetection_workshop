@@ -1,0 +1,5 @@
+/venv
+/test
+/data
+data.pickle
+model.p

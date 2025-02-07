@@ -15,10 +15,10 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)  # Adjust detection confidence as needed
 
 # Dictionary for mapping model predictions to corresponding labels
-labels_dict = {0: 'A', 1: 'B', 2: 'L'}  # Update with actual labels corresponding to your dataset
+labels_dict = {0: 'A', 1: 'B', 2: 'C'}  # Update with actual labels corresponding to your dataset
 
 # Define zoom parameters for the video feed
-zoom_factor = 1.5  # This factor controls the level of zoom in the video
+zoom_factor = 1  # This factor controls the level of zoom in the video
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))  # Get video frame width
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # Get video frame height
 center_x, center_y = int(width / 2), int(height / 2)  # Calculate center of the frame for zooming
