@@ -9,7 +9,7 @@ if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)  # Create the directory to store data
 
 # Set the number of gesture classes (e.g., for ASL characters) and number of images per class
-number_of_classes = 3  # Number of ASL characters or classes to capture (update this as needed)
+number_of_classes = 26  # Number of ASL characters or classes to capture (update this as needed)
 dataset_size = 100  # Number of images to capture per class
 
 # Initialize video capture from the default camera (index 0)
